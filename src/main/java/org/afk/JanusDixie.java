@@ -1,45 +1,90 @@
 package org.afk;
 
-import org.afk.fallback.DefaultJaDiContainer;
-import org.afk.fallback.DefaultJaDiModifier;
-import org.afk.fallback.DefaultJaDiStorage;
-
-import java.util.Optional;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 /**
+ * The JanusDixie class ist the central management class of the JanusDixie library. It must be initialiced with valid paramaters and is responsible to
+ * tie the different aspects of the modules logically together. doh! It is recommended to use the {@see JanusDixieBuilder} to generate a valid JanusDixie.
+ * (Version upgrades might add new features and change the constructor of this class)
+ *
+ *
  * Created by axel on 28.10.15.
  */
 public class JanusDixie {
 
-    private final JaDiContainer container;
-    private final JaDiStorage storage;
-    private final JaDiModifier modifier;
+    private final JaDiMemory memory;
+    private final JaDiPersistence persistence;
+    private final JaDiManipulator manipulator;
 
-    public JanusDixie(JaDiContainer container, JaDiStorage storage, JaDiModifier modifier) {
-        this.container = Optional.ofNullable(container).orElse(new DefaultJaDiContainer());
-        this.storage = Optional.ofNullable(storage).orElse(new DefaultJaDiStorage());
-        this.modifier = Optional.ofNullable(modifier).orElse(new DefaultJaDiModifier());
+    /**
+     *
+     * @param memory
+     * @param persistence
+     * @param manipulator
+     */
+    public JanusDixie(JaDiMemory memory, JaDiPersistence persistence, JaDiManipulator manipulator) {
+        Objects.requireNonNull(memory, "memory can not be null");
+        Objects.requireNonNull(persistence, "persistence can not be null");
+        Objects.requireNonNull(manipulator, "manipulator can not be null");
+
+        this.memory = memory;
+        this.persistence = persistence;
+        this.manipulator = manipulator;
     }
 
     /**
-     * Adds a consumer for an id. If there is no
+     * This method registers a callback for an ID. Whenever the value stored in memory will change,
+     * the callback is called with the new Value.
+     * This method throws an Exception, in case somebody has already registered a callback.
+     * The setter will be called immediately with either the persisted or the default value.
      *
-     * @param <T>
-     * @param id
-     * @param setter
-     * @param defaultProvider
+     * @param id              The unique ID where the value is registered.
+     * @param setter          The setter that will be called, when the value changes.
+     * @param defaultProvider The default value supplier that will be called, if the Value was not persisted before.
+     * @param <T>             The type of the value.
+     * @return The new RecordSet of the ID.
+     * @throws JaDiException in case the ID was already registered.
      */
-    public <T> void add(String id, Consumer<T> setter, Supplier<T> defaultProvider) {
-        T defaultValue = defaultProvider != null ? defaultProvider.get() : null;
+    public <T> JaDiRecordSet<T> addOrFail(String id, Consumer<T> setter, final Supplier<T> defaultProvider) {
+        if (memory.has(id))
+            throw new JaDiException("ID '" + id + "' exists ", JaDiError.ID_EXISTS);
 
-        T contained = container.get(id);
-
-        T stored = storage.retrieve(id);
-        if (stored == null) storage.store(id, defaultValue);
-
-        setter.accept(stored != null ? stored : defaultValue);
+        return addOrGet(id, setter, defaultProvider);
     }
 
+
+    /**
+     * This method registers a callback for an ID. Whenever the value stored in memory will change,
+     * the callback is called with the new Value. If there is already a registered callback, the previous JaDiRecordSet is returned.
+     * The setter will be called immediately with either the persisted or the default value.
+     *
+     * @param id              The unique ID where the value is registered.
+     * @param setter          The setter that will be called, when the value changes.
+     * @param defaultProvider The default value supplier that will be called, if the Value was not persisted before.
+     * @param <T>             The type of the value.
+     * @return The new or previous RecordSet of the ID.
+     */
+    public <T> JaDiRecordSet<T> addOrGet(String id, Consumer<T> setter, final Supplier<T> defaultProvider) {
+
+        // get previous recordset or create a new one
+        JaDiRecordSet<T> recordSet = memory.getOrCreate(id, () -> new JaDiRecordSet<T>(id, setter, defaultProvider != null ? defaultProvider.get() : null));
+
+        if (persistence.has(id))
+            recordSet.setValue(persistence.retrieve(id));
+        else
+            persistence.store(id, defaultProvider.get());
+
+        updateCallbackWithChangedValue(recordSet, recordSet.getValue());
+
+        return recordSet;
+    }
+
+    private <T> void updateCallbackWithChangedValue(JaDiRecordSet<T> recordSet, T newValue) {
+        Consumer<T> setter = recordSet.getSetter();
+        if (setter != null) {
+            setter.accept(newValue);
+        }
+    }
 }
