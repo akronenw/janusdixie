@@ -1,7 +1,7 @@
-package org.afk.fallback;
+package org.afk.jadi.impl.defaults;
 
-import org.afk.JaDiMemory;
-import org.afk.JaDiRecordSet;
+import org.afk.jadi.api.JaDiMemory;
+import org.afk.jadi.api.JaDiRecordSet;
 
 import java.util.Collections;
 import java.util.HashMap;

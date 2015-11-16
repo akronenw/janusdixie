@@ -1,15 +1,15 @@
-package org.afk;
+package org.afk.jadi.api;
 
 import java.util.function.Function;
 
 /**
  * Created by axel on 08.11.2015.
  */
-public class JaDiConverter<T> {
+public class JaDiStringConverter<T> {
     private final Function<String,T> parser;
     private final Function<T,String> formatter;
 
-    public JaDiConverter(Function<String, T> parser, Function<T, String> formatter) {
+    public JaDiStringConverter(Function<String, T> parser, Function<T, String> formatter) {
         this.parser = parser;
         this.formatter = formatter;
     }

@@ -1,11 +1,15 @@
 /**
  * Created by axel on 28.10.15.
  */
-package org.afk;
+package org.afk.jadi;
 
-import org.afk.fallback.DefaultJaDiManipulator;
-import org.afk.fallback.DefaultJaDiMemory;
-import org.afk.fallback.DefaultJaDiPersistence;
+import org.afk.jadi.api.JanusDixie;
+import org.afk.jadi.impl.defaults.DefaultJaDiManipulator;
+import org.afk.jadi.impl.defaults.DefaultJaDiMemory;
+import org.afk.jadi.impl.defaults.DefaultJaDiPersistence;
+import org.afk.jadi.api.JaDiManipulator;
+import org.afk.jadi.api.JaDiMemory;
+import org.afk.jadi.api.JaDiPersistence;
 
 import java.util.Optional;
 
@@ -24,9 +28,9 @@ import java.util.Optional;
  * .create();
  * <p>
  * <p>
- * If no JaDiMemory is set, the {@see org.afk.fallback.DefaultJaDiMemory} is used.
- * If no JaDiPersistence is set, the {@see org.afk.fallback.DefaultJaDiPersistence} is used.
- * If no JaDiManipulator is set, the {@see org.afk.fallback.DefaultJaDiManipulator} is used.
+ * If no JaDiMemory is set, the {@see org.afk.jadi.impl.defaults.DefaultJaDiMemory} is used.
+ * If no JaDiPersistence is set, the {@see org.afk.jadi.impl.defaults.DefaultJaDiPersistence} is used.
+ * If no JaDiManipulator is set, the {@see org.afk.jadi.impl.defaults.DefaultJaDiManipulator} is used.
  */
 public class JanusDixieBuilder {
 

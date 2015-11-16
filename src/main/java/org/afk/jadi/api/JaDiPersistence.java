@@ -1,4 +1,4 @@
-package org.afk;
+package org.afk.jadi.api;
 
 /**
  * Created by axel on 28.10.15.

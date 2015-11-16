@@ -1,4 +1,4 @@
-package org.afk;
+package org.afk.jadi.api;
 
 import java.util.Objects;
 import java.util.function.Consumer;

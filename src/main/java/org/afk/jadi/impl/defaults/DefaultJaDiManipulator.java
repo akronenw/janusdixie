@@ -1,6 +1,6 @@
-package org.afk.fallback;
+package org.afk.jadi.impl.defaults;
 
-import org.afk.JaDiManipulator;
+import org.afk.jadi.api.JaDiManipulator;
 
 /**
  * Created by axel on 28.10.15.

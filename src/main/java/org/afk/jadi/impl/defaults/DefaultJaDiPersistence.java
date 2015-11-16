@@ -1,6 +1,6 @@
-package org.afk.fallback;
+package org.afk.jadi.impl.defaults;
 
-import org.afk.JaDiPersistence;
+import org.afk.jadi.api.JaDiPersistence;
 
 /**
  * The Default JaDiPersistence drops all data and returns null on every request.

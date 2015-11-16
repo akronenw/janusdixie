@@ -1,4 +1,4 @@
-package org.afk;
+package org.afk.jadi;
 
 import org.junit.Test;
 

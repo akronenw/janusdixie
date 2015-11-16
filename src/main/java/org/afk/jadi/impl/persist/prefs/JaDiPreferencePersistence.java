@@ -1,6 +1,6 @@
-package org.afk.impl;
+package org.afk.jadi.impl.persist.prefs;
 
-import org.afk.JaDiPersistence;
+import org.afk.jadi.api.JaDiPersistence;
 
 import java.util.prefs.Preferences;
 
