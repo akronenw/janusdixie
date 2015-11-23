@@ -11,12 +11,13 @@ public class DefaultJaDiPersistence implements JaDiPersistence {
     /**
      * Returns always null.
      *
-     * @param id  The ID of the requested value.
-     * @param <T> The type of the requested value.
+     * @param id    The ID of the requested value.
+     * @param <T>   The type of the requested value.
+     * @param clazz The class of the retrieved type.
      * @return null.
      */
     @Override
-    public <T> T retrieve(String id) {
+    public <T> T retrieve(String id, Class<T> clazz) {
         return null;
     }
 

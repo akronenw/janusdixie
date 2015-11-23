@@ -10,14 +10,17 @@ import java.util.function.Consumer;
  */
 public class JaDiRecordSet<T> {
 
+    private final Class<T> clazz;
+
     private T value;
     private String id;
     private Consumer<T> setter;
 
-    public JaDiRecordSet(String id, Consumer<T> setter, T value) {
+    public JaDiRecordSet(String id, Consumer<T> setter, T value, Class<T> clazz) {
         this.id = id;
         this.setter = setter;
         this.value = value;
+        this.clazz = clazz;
     }
 
     @Override
@@ -57,5 +60,9 @@ public class JaDiRecordSet<T> {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public Class<T> getClazz() {
+        return clazz;
     }
 }
