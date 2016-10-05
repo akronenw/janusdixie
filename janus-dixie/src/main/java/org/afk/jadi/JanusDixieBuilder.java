@@ -4,9 +4,9 @@
 package org.afk.jadi;
 
 import org.afk.jadi.api.JanusDixie;
-import org.afk.jadi.impl.defaults.StaticJaDiManipulator;
-import org.afk.jadi.impl.defaults.MappedJaDiMemory;
-import org.afk.jadi.impl.defaults.DevNullJaDiPersistence;
+import org.afk.jadi.defaults.StaticJaDiManipulator;
+import org.afk.jadi.defaults.MappedJaDiMemory;
+import org.afk.jadi.defaults.DevNullJaDiPersistence;
 import org.afk.jadi.api.JaDiManipulator;
 import org.afk.jadi.api.JaDiMemory;
 import org.afk.jadi.api.JaDiPersistence;

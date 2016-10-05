@@ -1,4 +1,4 @@
-package org.afk.jadi.impl.defaults;
+package org.afk.jadi.defaults;
 
 import org.afk.jadi.api.JaDiMemory;
 import org.afk.jadi.api.JaDiRecordSet;

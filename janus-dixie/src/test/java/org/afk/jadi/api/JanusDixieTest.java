@@ -1,7 +1,7 @@
 package org.afk.jadi.api;
 
-import org.afk.jadi.impl.defaults.MappedJaDiMemory;
-import org.afk.jadi.impl.defaults.StaticJaDiManipulator;
+import org.afk.jadi.defaults.MappedJaDiMemory;
+import org.afk.jadi.defaults.StaticJaDiManipulator;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import org.junit.Test;
