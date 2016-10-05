@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * The default implementation of JaDiMemory stores all JaDiRecordSets in a synchronized Map.
+ * The MappedJaDiMemory stores all JaDiRecordSets in a synchronized Map.
  * Created by axel on 28.10.15.
  */
-public class DefaultJaDiMemory implements JaDiMemory {
+public class MappedJaDiMemory implements JaDiMemory {
 
     private final Map<String, JaDiRecordSet> records = Collections.synchronizedMap(new HashMap<>());
 

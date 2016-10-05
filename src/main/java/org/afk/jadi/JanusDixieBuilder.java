@@ -4,9 +4,9 @@
 package org.afk.jadi;
 
 import org.afk.jadi.api.JanusDixie;
-import org.afk.jadi.impl.defaults.DefaultJaDiManipulator;
-import org.afk.jadi.impl.defaults.DefaultJaDiMemory;
-import org.afk.jadi.impl.defaults.DefaultJaDiPersistence;
+import org.afk.jadi.impl.defaults.StaticJaDiManipulator;
+import org.afk.jadi.impl.defaults.MappedJaDiMemory;
+import org.afk.jadi.impl.defaults.DevNullJaDiPersistence;
 import org.afk.jadi.api.JaDiManipulator;
 import org.afk.jadi.api.JaDiMemory;
 import org.afk.jadi.api.JaDiPersistence;
@@ -28,9 +28,9 @@ import java.util.Optional;
  * .create();
  * <p>
  * <p>
- * If no JaDiMemory is set, the {@see org.afk.jadi.impl.defaults.DefaultJaDiMemory} is used.
- * If no JaDiPersistence is set, the {@see org.afk.jadi.impl.defaults.DefaultJaDiPersistence} is used.
- * If no JaDiManipulator is set, the {@see org.afk.jadi.impl.defaults.DefaultJaDiManipulator} is used.
+ * If no JaDiMemory is set, the {@see org.afk.jadi.impl.defaults.MappedJaDiMemory} is used.
+ * If no JaDiPersistence is set, the {@see org.afk.jadi.impl.defaults.DevNullJaDiPersistence} is used.
+ * If no JaDiManipulator is set, the {@see org.afk.jadi.impl.defaults.StaticJaDiManipulator} is used.
  */
 public class JanusDixieBuilder {
 
@@ -56,9 +56,9 @@ public class JanusDixieBuilder {
 
     public JanusDixie create() {
         return new JanusDixie(
-                Optional.ofNullable(memory).orElse(new DefaultJaDiMemory()),
-                Optional.ofNullable(persistence).orElse(new DefaultJaDiPersistence()),
-                Optional.ofNullable(manipulator).orElse(new DefaultJaDiManipulator())
+                Optional.ofNullable(memory).orElse(new MappedJaDiMemory()),
+                Optional.ofNullable(persistence).orElse(new DevNullJaDiPersistence()),
+                Optional.ofNullable(manipulator).orElse(new StaticJaDiManipulator())
         );
     }
 }

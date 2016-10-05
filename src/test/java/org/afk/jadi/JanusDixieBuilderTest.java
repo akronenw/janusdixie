@@ -25,7 +25,7 @@ public class JanusDixieBuilderTest {
     }
 
     @Test
-    public void nullPersistanceDoesNotThrowException() {
+    public void nullPersistenceDoesNotThrowException() {
         assertNotNull(new JanusDixieBuilder().setPersistence(null).create());
     }
 }

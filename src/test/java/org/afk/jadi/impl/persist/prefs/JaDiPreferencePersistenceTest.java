@@ -1,6 +1,7 @@
 package org.afk.jadi.impl.persist.prefs;
 
-import org.afk.jadi.impl.defaults.DefaultJaDiStringConverterFactory;
+import org.afk.jadi.api.JaDiException;
+import org.afk.jadi.tools.SimpleStringConverterFactory;
 import org.junit.After;
 import org.junit.Test;
 
@@ -32,35 +33,34 @@ public class JaDiPreferencePersistenceTest {
     }
 
     @Test
-    public void testPrefsHasStoredValue() {
+    public void testPrefsHasStoredValue() throws JaDiException {
         givenPrefs();
         withPersistence();
-        jaDiPreferencePersistence.store("a", "b");
+        jaDiPreferencePersistence.store("a", "b", String.class);
         assertThat(jaDiPreferencePersistence.has("a"), equalTo(true));
     }
 
     @Test
-    public void testPrefsProvideStoredValue() {
+    public void testPrefsProvideStoredValue() throws JaDiException {
         givenPrefs();
         withPersistence();
-        jaDiPreferencePersistence.store("a", "b");
+        jaDiPreferencePersistence.store("a", "b", String.class);
         String result = jaDiPreferencePersistence.retrieve("a", String.class);
         assertThat(result, equalTo("b"));
     }
 
     @Test
-    public void testPrefsProvideStoredDoubleValue() {
+    public void testPrefsProvideStoredDoubleValue() throws JaDiException {
         givenPrefs();
         withPersistence();
         final double t = 24.35;
-        jaDiPreferencePersistence.store("a", t);
+        jaDiPreferencePersistence.store("a", t, Double.class);
         Double result = jaDiPreferencePersistence.retrieve("a", Double.class);
         assertThat(result, equalTo(t));
     }
 
-
     private void withPersistence() {
-        jaDiPreferencePersistence = new JaDiPreferencePersistence(prefs, new DefaultJaDiStringConverterFactory());
+        jaDiPreferencePersistence = new JaDiPreferencePersistence(prefs, new SimpleStringConverterFactory());
     }
 
     private void givenPrefs() {

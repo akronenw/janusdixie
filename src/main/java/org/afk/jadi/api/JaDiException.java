@@ -1,44 +1,39 @@
 package org.afk.jadi.api;
 
 /**
+ * A JaDiException is thrown whenever the framework can not handle a problem.
  * Created by axel on 05.11.15.
  */
-public class JaDiException extends RuntimeException {
+public class JaDiException extends Exception {
 
-    private final JaDiError error;
-
-    public JaDiException(JaDiError error) {
-        this.error = error;
-    }
-
-    public JaDiException(String message, JaDiError error) {
+    /**
+     * Creates a JaDiException with just a description.
+     *
+     * @param message The description.
+     */
+    public JaDiException(String message) {
         super(message);
-        this.error = error;
+
     }
 
-    public JaDiException(String message, Throwable cause, JaDiError error) {
+    /**
+     * Creates a JaDiException with a description and a cause.
+     *
+     * @param message The description.
+     * @param cause   The cause of the problem.
+     */
+    public JaDiException(String message, Throwable cause) {
         super(message, cause);
-
-        this.error = error;
     }
 
-    public JaDiException(Throwable cause, JaDiError error) {
+    /**
+     * Creates a JaDiException with just a cause.
+     *
+     * @param cause The cause of the problem.
+     */
+    public JaDiException(Throwable cause) {
         super(cause);
-        this.error = error;
-    }
 
-    public JaDiException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, JaDiError error) {
-        super(message, cause, enableSuppression, writableStackTrace);
-        this.error = error;
-    }
-
-    public JaDiError getError() {
-        return error;
-    }
-
-    @Override
-    public String getMessage() {
-        return super.getMessage() + " (" + error + ")";
     }
 }
 
