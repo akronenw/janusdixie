@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.afk.jadi</groupId>
-    <artifactId>janus-dixie</artifactId>
+    <artifactId>janus-dixie-core</artifactId>
     <version>1.0-SNAPSHOT</version>
     <parent>
-    <groupId>org.afk.jadi</groupId>
-    <artifactId>jadi-main</artifactId>
-    <version>1.0-SNAPSHOT</version>
+        <groupId>org.afk.jadi</groupId>
+        <artifactId>janus-dixie-master</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
-
+    <name>2-janus-dixie-core</name>
 </project>

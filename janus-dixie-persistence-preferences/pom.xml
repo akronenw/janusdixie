@@ -7,14 +7,15 @@
     <version>1.0-SNAPSHOT</version>
     <parent>
         <groupId>org.afk.jadi</groupId>
-        <artifactId>jadi-main</artifactId>
+        <artifactId>janus-dixie-master</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>janusdixie</artifactId>
+            <artifactId>janus-dixie-core</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+    <name>3-janus-dixie-persistence-preferences</name>
 </project>
