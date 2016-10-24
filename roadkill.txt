@@ -1,0 +1,26 @@
+h1.todos:
+
+* karaf manipulator
+** show configs
+	[ ] display all possible configs or details of some configs
+	[ ] visibility programming (dependency of tags)
+** show descriptions
+	[ ] use a formatter
+** set value
+	[ ] validation of the value
+	[ ] automatic error message with options?
+** reset value
+	[ ] should always work
+	[ ] reset all?
+** autocomplete values
+
+
+* recordset
+** descriptor
+** predefined values
+** value validation
+** tags
+
+* global validation
+
+* visibility toggle

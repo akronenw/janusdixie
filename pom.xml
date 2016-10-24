@@ -49,6 +49,7 @@
     <modules>
         <module>janus-dixie</module>
         <module>janus-dixie-persistence-preferences</module>
+        <module>janus-dixie-manipulator-karaf</module>
     </modules>
 
     <build>
