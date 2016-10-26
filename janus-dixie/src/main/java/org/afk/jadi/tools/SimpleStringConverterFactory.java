@@ -40,7 +40,6 @@ public class SimpleStringConverterFactory implements JaDiStringConverterFactory 
         if (BigInteger.class.isAssignableFrom(clazz)) {
             return new JaDiStringConverter<>(s -> clazz.cast(new BigInteger(s)), i -> String.valueOf(i));
         }
-
         if (Float.class.isAssignableFrom(clazz)) {
             return new JaDiStringConverter<>(s -> clazz.cast(Float.valueOf(s)), i -> String.valueOf(i));
         }

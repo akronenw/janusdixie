@@ -2,6 +2,7 @@ package org.afk.jadi.api;
 
 import org.afk.jadi.defaults.MappedJaDiMemory;
 import org.afk.jadi.defaults.StaticJaDiManipulator;
+import org.afk.jadi.tools.SimpleStringConverterFactory;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import org.junit.Test;
@@ -65,6 +66,16 @@ public class JanusDixieTest {
         thenCallBackIs("coffee");
     }
 
+    @Test
+    public void testInterface() throws JaDiException {
+        givenDixie();
+        whithPersistedValue("this.is.sparta", "lame");
+        WeirdConfig impl = whenRegisteredInterface(WeirdConfig.class);
+        assertThat(impl.getName(), is("lame"));
+        assertThat(impl.getLongness(), is(190L));
+        assertThat(impl.getWhiskey(), is(190.305));
+    }
+
     private void thenCallBackIs(String expected) {
         assertThat(value, is(expected));
     }
@@ -87,5 +98,22 @@ public class JanusDixieTest {
 
     private void callBack(String value) {
         this.value = value;
+    }
+
+    private <T> T whenRegisteredInterface(Class<T> aClass) throws JaDiException {
+        return janusDixie.registerProxy(aClass, new SimpleStringConverterFactory());
+    }
+
+    private static interface WeirdConfig {
+
+        @Configured(key = "this.is.sparta", defaultValue = "fantastic")
+        String getName();
+
+        @Configured(key = "this.is.long", defaultValue = "190")
+        Long getLongness();
+
+        @Configured(key = "make.it.double", defaultValue = "190.305")
+        Double getWhiskey();
+
     }
 }

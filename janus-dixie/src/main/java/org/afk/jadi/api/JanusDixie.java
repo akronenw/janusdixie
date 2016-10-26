@@ -1,12 +1,14 @@
 package org.afk.jadi.api;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.afk.jadi.JanusDixieBuilder;
+import org.afk.jadi.tools.JaDiStringConverter;
+import org.afk.jadi.tools.JaDiStringConverterFactory;
 
 /**
  * The JanusDixie class ist the central management class of the JanusDixie
@@ -91,15 +93,75 @@ public class JanusDixie {
 
         // read the persistence if exists
         if (persistence.has(id)) {
-            recordSet.setAndFire(persistence.retrieve(id, clazz));
+            recordSet.setValue(persistence.retrieve(id, clazz));
         }
-        // register persistence for changes
-        recordSet.addCallBack(value -> persistence.store(id, recordSet.getValue(), clazz));
 
         // fire initial value change
         recordSet.fireCallBacks();
 
+        // now register persistence for changes. Every change will be persistet from now on
+        recordSet.addCallBack(value -> persistence.store(id, value, clazz));
+
         return recordSet;
     }
 
+    public <T> T registerProxy(Class<T> clazz, JaDiStringConverterFactory factory) throws JaDiException {
+        registerConfiguredInterface(clazz, factory);
+        // return proxy
+        return (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]{clazz}, new JanusDixieProxy(this));
+    }
+
+    private void registerConfiguredInterface(Class<?> clazz, JaDiStringConverterFactory factory) throws JaDiException {
+        // register all values
+        try {
+            for (Method declaredMethod : clazz.getDeclaredMethods()) {
+                registerConfiguredMethod(declaredMethod, factory);
+            }
+        } catch (SecurityException securityException) {
+            throw new JaDiException("JanusDixie Proxy is not supported with active SecurityManager.", securityException);
+        }
+    }
+
+    private void registerConfiguredMethod(Method declaredMethod, JaDiStringConverterFactory factory) throws JaDiException {
+        if (!declaredMethod.isAnnotationPresent(Configured.class)) {
+            throw new JaDiException("Method " + declaredMethod + " is not annotated with Configured.");
+        }
+        if (declaredMethod.getParameterCount() > 0) {
+            throw new JaDiException("Method " + declaredMethod + " requires paramaters.");
+        }
+        if (declaredMethod.getReturnType().equals(Void.TYPE)) {
+            throw new JaDiException("Method " + declaredMethod + " returns void.");
+        }
+
+        registerAnnotatedValue(declaredMethod, factory);
+    }
+
+    private void registerAnnotatedValue(Method declaredMethod, JaDiStringConverterFactory factory) throws JaDiException {
+        final Configured annotation = declaredMethod.getAnnotation(Configured.class);
+        final String defaultValue = annotation.defaultValue();
+        final Class returnType = declaredMethod.getReturnType();
+        try {
+            final JaDiStringConverter<?> converterForClass = factory.getConverterForClass(returnType);
+            addOrGet(annotation.key(), v -> {
+            }, () -> (converterForClass.parse(defaultValue)), returnType);
+        } catch (JaDiException ex) {
+            throw new JaDiException("Method " + declaredMethod + " requires a Striong converter for the default value '" + defaultValue + "' of return type '" + returnType + "'.", ex);
+        }
+    }
+
+    /**
+     * Retrieves the current value of a key. This methdo throws a
+     * IllegalArgumentException if the key is not registered.
+     *
+     * @param <T> The expected Type of the value.
+     * @param key The key.
+     * @return The value of the key.
+     */
+    public <T> T get(String key) {
+        if (!memory.has(key)) {
+            throw new IllegalArgumentException("Unknown key '" + key + "'");
+        }
+        final JaDiRecordSet<Object> result = memory.get(key);
+        return (T) result.getValue();
+    }
 }
